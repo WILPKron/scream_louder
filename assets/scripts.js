@@ -5,6 +5,23 @@ let game = {
     ctx: undefined,
     ctx2: null,
     sprites: {
+        volume: {
+            index: 0,
+            key: 'idle',
+            position: {
+                min: 805,
+                max: 1285,
+                point: null,
+                vector: 'donw',
+            },
+            images: {
+                idle: [ 
+                    'images/block/volume_level_1.png',
+                    'images/block/volume_level_2.png',
+                    'images/block/volume_level_3.png',
+                ]
+            } 
+        },
         score: {
             index: 0,
             key: 'idle',
@@ -220,9 +237,22 @@ let game = {
         this.ctx.font = "45px Arial";
         this.ctx.fillText("5", 375, 100);
         /**********************score2*************************/
-
         
+        /**********************volueme1*************************/
+        const volueme1 = sprites.volume.loadImg['idle'][0];
+        const volueme1X = -1000;
+        const volueme1Y = -90;
+        this.ctx.drawImage(volueme1, 0, 0, 1870 - volueme1X, 168 - volueme1Y, 800, 60, 1870 + volueme1X, 168 + volueme1Y);
+        /**********************volueme1*************************/
 
+        /**********************score2*************************/
+        const volueme2 = sprites.volume.loadImg['idle'][1];
+        const volueme2X = -1000;
+        const volueme2Y = -90;
+        const volume2Min = 805;
+        const volume2Max = 1285;
+        this.ctx.drawImage(volueme2, 0, 0, 1870 - volueme2X, 168 - volueme2Y, this.sprites.volume.position.point, 70, 1870 + volueme2X, 168 + volueme2Y);
+        /**********************score2*************************/
         // this.ctx.drawImage(
         //     row1,//sprite
         //     0,//ball.width
@@ -317,6 +347,28 @@ game.animation = function () {
             }
         } else this.sprites.speacer.index = 0;
     }, 150);
+    /******************************************************/
+    /******************************************************/
+
+    /**********************speacer****************************/
+    /******************************************************/
+    setInterval(() => {
+        //console.log(this.sprites.volume.position);
+        if(!this.sprites.volume.position.point) {
+            this.sprites.volume.position.point = this.sprites.volume.position.max;
+            this.sprites.volume.position.vector = 'down';
+        }
+        if(this.sprites.volume.position.vector == 'up') {
+            this.sprites.volume.position.point += 1;
+        } else if (this.sprites.volume.position.vector == 'down') {
+            this.sprites.volume.position.point -= 1;
+        }
+        if(this.sprites.volume.position.point < this.sprites.volume.position.min) {
+            this.sprites.volume.position.vector = 'up'
+        } else if(this.sprites.volume.position.point > this.sprites.volume.position.max) {
+            this.sprites.volume.position.vector = 'down'
+        }
+    }, 1);
     /******************************************************/
     /******************************************************/
 
