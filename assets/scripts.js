@@ -3,7 +3,22 @@ let game = {
     width: 1920,
     height: 1080,
     ctx: undefined,
+    ctx2: null,
     sprites: {
+        score: {
+            index: 0,
+            key: 'idle',
+            images: {
+                idle: [ 'images/score_1.png' ]
+            }
+        },
+        score2: {
+            index: 0,
+            key: 'idle',
+            images: {
+                idle: [ 'images/score_2.png' ]
+            }
+        },
         crowd: {
             index: 0,
             key: 'idle',
@@ -90,12 +105,26 @@ let game = {
                 idle: [ 'images/row/row_2.png' ]
             }
         },
+        speacer: {
+            index: 0,
+            key: 'animate',
+            images: {
+                idle: [ 'images/speaker/1/Speaker_1_1.png' ],
+                animate: [
+                    'images/speaker/1/Speaker_1_1.png',
+                    'images/speaker/1/Speaker_1_2.png',
+                    'images/speaker/1/Speaker_1_3.png',
+                    'images/speaker/1/Speaker_1_4.png',
+                ]
+            }
+        },
     },
     animationOn: {
         crowd: false,
         people1st: true,
         people2st: true,
         boy: true,
+        speacer: true
     },
     create: function () {
 
@@ -133,6 +162,7 @@ let game = {
         const sprites = this.sprites;
         this.ctx.clearRect(0, 0, this.width, this.hight);
         this.ctx.drawImage(sprites.crowd.loadImg[sprites.crowd.key][sprites.crowd.index], 0, 0);
+        
 
         const people1st = sprites.people1st.loadImg[sprites.people1st.key][sprites.people1st.index];
         const people2st = sprites.people2st.loadImg[sprites.people2st.key][sprites.people2st.index];
@@ -140,6 +170,8 @@ let game = {
 
         const row1 = sprites.row1.loadImg[sprites.row1.key][sprites.row1.index];
         const row2 = sprites.row2.loadImg[sprites.row2.key][sprites.row2.index];
+        
+        const speacer = sprites.speacer.loadImg[sprites.speacer.key][sprites.speacer.index];
 
         const people2stx = -120;
         const people2sty = -80;
@@ -158,6 +190,37 @@ let game = {
         this.ctx.drawImage(boy, 0, 0, 341, 346, 1570, 708, 341, 346);
         this.ctx.drawImage(people1st, 0, 0, 1920, 429, -110 - people1stx, 590 - people1sty, 1920 + people1stx, 429 + people1sty);
         this.ctx.drawImage(row1, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
+        
+        const speacerx = -850;
+        const speacery = -900;
+
+        this.ctx.drawImage(speacer, 0, 0, 1965 - speacerx, 2128 - speacery, -160, 200, 1965 + speacerx, 2128 + speacery);
+
+        
+        
+        
+        /**********************score*************************/
+        const score = sprites.score.loadImg[sprites.score.key][sprites.score.index];
+        const scoreX = - 650;
+        const scoreY = - 300;
+        this.ctx.font = "25px Arial";
+        this.ctx.fillText("ОЧКИ", 155, 40);
+        this.ctx.drawImage(score, 0, 0, 954 - scoreX, 417 - scoreY, 100, 50, 954 + scoreX, 417 + scoreY);
+        this.ctx.font = "45px Arial";
+        this.ctx.fillText("5555", 140, 100);
+        /**********************score*************************/
+
+        /**********************score2*************************/
+        const score2 = sprites.score2.loadImg[sprites.score2.key][sprites.score2.index];
+        const score2X = - 650;
+        const score2Y = - 300;
+        this.ctx.font = "25px Arial";
+        this.ctx.fillText("КОМБО", 345, 40);
+        this.ctx.drawImage(score2, 0, 0, 954 - score2X, 417 - score2Y, 320, 50, 954 + score2X, 417 + score2Y);
+        this.ctx.font = "45px Arial";
+        this.ctx.fillText("5", 375, 100);
+        /**********************score2*************************/
+
         
 
         // this.ctx.drawImage(
@@ -241,6 +304,19 @@ game.animation = function () {
             }
         } else this.sprites.boy.index = 0;
     }, 100);
+    /******************************************************/
+    /******************************************************/
+
+    /**********************speacer****************************/
+    /******************************************************/
+    setInterval(() => {
+        if(this.animationOn.speacer) {
+            this.sprites.speacer.index++;
+            if(this.sprites.speacer.index == this.sprites.speacer.images[this.sprites.speacer.key].length) {
+                this.sprites.speacer.index = 0;
+            }
+        } else this.sprites.speacer.index = 0;
+    }, 150);
     /******************************************************/
     /******************************************************/
 
