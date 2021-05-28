@@ -353,15 +353,14 @@ game.animation = function () {
     /**********************speacer****************************/
     /******************************************************/
     setInterval(() => {
-        //console.log(this.sprites.volume.position);
         if(!this.sprites.volume.position.point) {
             this.sprites.volume.position.point = this.sprites.volume.position.max;
             this.sprites.volume.position.vector = 'down';
         }
         if(this.sprites.volume.position.vector == 'up') {
-            this.sprites.volume.position.point += 1;
+            this.sprites.volume.position.point += 0.8;
         } else if (this.sprites.volume.position.vector == 'down') {
-            this.sprites.volume.position.point -= 1;
+            this.sprites.volume.position.point -= 0.8;
         }
         if(this.sprites.volume.position.point < this.sprites.volume.position.min) {
             this.sprites.volume.position.vector = 'up'
