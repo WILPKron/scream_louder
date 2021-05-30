@@ -137,10 +137,11 @@ let game = {
             rotate: {
                 list: (() => {
                     const y = 200;
-                    let x = -160;
-                    let list = [ { rotate: 0, x: -160, y: 200 } ];
-                    for(let rotate = 0; rotate < 16; rotate += 0.1) {
-                        x -= rotate > 7 ? 3 : 1;
+                    let x = -10;
+                    //let list = [ { rotate: 0, x: -160, y: 200 } ];
+                    let list = [ ];
+                    for(let rotate = -15; rotate < 16; rotate += 0.1) {
+                        x -= rotate > 7 ? 1.2 : 1;
                         list.push( { rotate: -rotate, x: x, y: 200 } );
                     }
                     return list;
