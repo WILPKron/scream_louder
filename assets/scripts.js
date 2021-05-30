@@ -133,6 +133,20 @@ let game = {
                     'images/speaker/1/Speaker_1_3.png',
                     'images/speaker/1/Speaker_1_4.png',
                 ]
+            },
+            rotate: {
+                list: (() => {
+                    const y = 200;
+                    let x = -160;
+                    let list = [ { rotate: 0, x: -160, y: 200 } ];
+                    for(let rotate = 0; rotate < 16; rotate += 0.1) {
+                        x -= rotate > 7 ? 3 : 1;
+                        list.push( { rotate: -rotate, x: x, y: 200 } );
+                    }
+                    return list;
+                })(),
+                actual: 1,
+                arrow: 'up',
             }
         },
     },
@@ -178,7 +192,7 @@ let game = {
     render: function() {
         const sprites = this.sprites;
         this.ctx.clearRect(0, 0, this.width, this.hight);
-        this.ctx.drawImage(sprites.crowd.loadImg[sprites.crowd.key][sprites.crowd.index], 0, 0);
+        
         
 
         const people1st = sprites.people1st.loadImg[sprites.people1st.key][sprites.people1st.index];
@@ -202,16 +216,13 @@ let game = {
         const people1stx = -120;
         const people1sty = -80;
 
+        this.ctx.drawImage(sprites.crowd.loadImg[sprites.crowd.key][sprites.crowd.index], 0, 0);
         this.ctx.drawImage(people2st, 0, 0, 1920, 429, -110 - people2stx, 650 - people2sty, 1920 + people2stx, 429 + people2sty);
         this.ctx.drawImage(row2, 0, 0, 1280, 720, 640 - r2x, 360 - r2y, 1280 + r2x, 720 + r2y);
         this.ctx.drawImage(boy, 0, 0, 341, 346, 1570, 708, 341, 346);
         this.ctx.drawImage(people1st, 0, 0, 1920, 429, -110 - people1stx, 590 - people1sty, 1920 + people1stx, 429 + people1sty);
         this.ctx.drawImage(row1, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
         
-        const speacerx = -850;
-        const speacery = -900;
-
-        this.ctx.drawImage(speacer, 0, 0, 1965 - speacerx, 2128 - speacery, -160, 200, 1965 + speacerx, 2128 + speacery);
 
         
         
@@ -265,6 +276,16 @@ let game = {
         //     720 + r1y//ball.height
         // );
 
+        const speacerx = -850;
+        const speacery = -900;
+        const rot = -20;
+        console.log(sprites.speacer.rotate.actual);
+        const rotate = sprites.speacer.rotate.list[sprites.speacer.rotate.actual];
+
+        this.ctx.rotate(rotate.rotate * Math.PI / 180);
+        this.ctx.drawImage(speacer, 0, 0, 1965 - speacerx, 2128 - speacery, rotate.x, rotate.y, 1965 + speacerx, 2128 + speacery);
+        this.ctx.rotate(-rotate.rotate * Math.PI / 180);
+
     },
     update: function() {
 
@@ -284,6 +305,28 @@ let game = {
     }
 };
 game.animation = function () {
+
+    /**********************speacer****************************/
+    /******************************************************/
+    setInterval(() => {
+        if(this.sprites.speacer.rotate.arrow === 'up') {
+            if(this.sprites.speacer.rotate.actual >= this.sprites.speacer.rotate.list.length - 1) {
+                this.sprites.speacer.rotate.arrow = 'down';
+                return false;
+            }
+            this.sprites.speacer.rotate.actual++;
+        } else if (this.sprites.speacer.rotate.arrow === 'down') {
+            
+            if(this.sprites.speacer.rotate.actual <= 0) {
+                this.sprites.speacer.rotate.arrow = 'up';
+                return false;
+            }
+            this.sprites.speacer.rotate.actual--;
+        }
+
+    }, 1);
+    /******************************************************/
+    /******************************************************/
 
     /**********************crowd****************************/
     /******************************************************/
