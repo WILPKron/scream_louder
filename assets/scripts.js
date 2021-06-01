@@ -4,11 +4,12 @@ let game = {
     height: 1080,
     canvas: null,
     info: {
-        pause: true,
+        pause: true ,
         timerStart: null,
         score: 0,
         combo: 1,
-        time: 150,
+        xCombo: 0,
+        time: 10,
         modalMode: 'start',
     },
     options: {
@@ -52,7 +53,10 @@ let game = {
                 idle: [
                     'images/bg.png',
                     'images/block/ui/Tanuki_2.png',
-                    'images/block/ui/yes.png'
+                    'images/block/ui/yes.png',
+                    'images/block/ui/Tanuki_score_2.png',
+                    'images/block/ui/Tanuki_score_1.png',
+                    'images/block/ui/Tanuki_score_3.png',
                 ]
             }
         },
@@ -412,9 +416,9 @@ let game = {
         
         if(this.info.modalMode) {
             this.ctx.drawImage(sprites.modal.loadImg['idle'][0], 0, 0);
+            this.ctx.fillStyle = "#fff";
             switch(this.info.modalMode) {
                 case "start":
-                    this.ctx.fillStyle = "#fff";
                     this.ctx.font = "22px " + this.options.fontName;
                     this.ctx.drawImage(sprites.modal.loadImg['idle'][1], 450, 100);
                     this.ctx.fillText("Правила игры", 900, 515);
@@ -432,12 +436,34 @@ let game = {
                     this.ctx.drawImage(sprites.modal.loadImg['idle'][2], 900, 850, 230, 105);
                     this.ctx.font = "40px " + this.options.fontName;
                     this.ctx.fillText("Старт!", 950, 910);
-                    this.ctx.fillStyle = "#000";
                 break;
                 case "countdown":
                     this.ctx.drawImage(sprites.timer.loadImg['idle'][sprites.timer.index], 750, 320);
                 break;
+                case "score":
+                    let face = 5;
+                    if(this.info.score < 500) {
+                        face = 3;
+                    } else if (this.info.score < 1000) {
+                        face = 4;
+                    }
+                    this.ctx.drawImage(sprites.modal.loadImg['idle'][face], 450, 100);
+                    this.ctx.font = "25px " + this.options.fontName;
+                    this.ctx.fillText("Тануки", 900, 517);
+                    this.ctx.textAlign = 'center';
+                    this.ctx.font = "75px " + this.options.fontName;
+                    this.ctx.fillText(this.info.xCombo, 785, 670);
+                    this.ctx.font = "40px " + this.options.fontName;
+                    this.ctx.fillText("КОМБО", 785, 740);
+
+                    this.ctx.font = "75px " + this.options.fontName;
+                    this.ctx.fillText(this.formateScore(this.info.score), 1195, 670);
+                    this.ctx.font = "40px " + this.options.fontName;
+                    this.ctx.fillText("БАЛЛЫ", 1200, 740);
+                    this.ctx.textAlign = 'left';
+                break;
             }
+            this.ctx.fillStyle = "#000";
             return false;
         }
 
@@ -475,26 +501,28 @@ let game = {
         this.ctx.drawImage(boy, 0, 0, 341, 346, 1570, 708, 341, 346);
         this.ctx.drawImage(people1st, 0, 0, 1920, 429, -110 - people1stx, 590 - people1sty, 1920 + people1stx, 429 + people1sty);
         this.ctx.drawImage(row1, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
+        this.ctx.textAlign = 'center';
         /**********************score*************************/
         const score = sprites.score.loadImg[sprites.score.key][sprites.score.index];
         const scoreX = - 650;
         const scoreY = - 300;
         this.ctx.font = "25px " + this.options.fontName;
-        this.ctx.fillText("ОЧКИ", 155, 40);
+        this.ctx.fillText("ОЧКИ", 190, 40);
         this.ctx.drawImage(score, 0, 0, 954 - scoreX, 417 - scoreY, 100, 50, 954 + scoreX, 417 + scoreY);
         this.ctx.font = "45px " + this.options.fontName;
-        this.ctx.fillText(this.formateScore(this.info.score), 135, 100);
+        this.ctx.fillText(this.formateScore(this.info.score), 190, 100);
         /**********************score*************************/
         /**********************score2*************************/
         const score2 = sprites.score2.loadImg[sprites.score2.key][sprites.score2.index];
         const score2X = - 650;
         const score2Y = - 300;
         this.ctx.font = "25px " + this.options.fontName;
-        this.ctx.fillText("КОМБО", 345, 40);
+        this.ctx.fillText("КОМБО", 390, 40);
         this.ctx.drawImage(score2, 0, 0, 954 - score2X, 417 - score2Y, 320, 50, 954 + score2X, 417 + score2Y);
         this.ctx.font = "45px " + this.options.fontName;
-        this.ctx.fillText(this.info.combo, 375, 100);
+        this.ctx.fillText(this.info.combo, 385, 100);
         /**********************score2*************************/
+        this.ctx.textAlign = 'left';
         /**********************volueme*************************/
         const positionV = sprites.volume.position;
         const volueme1 = sprites.volume.loadImg['idle'][0];
@@ -559,6 +587,8 @@ game.initEvent = function () {
         } else {
             this.setCombo(1);
             this.switchAnimation();
+            this.sprites.speacer.index = 0;
+            this.sprites.speacer.key = 'idle';
         }
     };
     this.eventButton({
@@ -589,6 +619,9 @@ game.initEvent = function () {
     setInterval(() => {
         if(this.info.pause) return false;
         this.info.time--;
+        if(this.info.time === 0) {
+            this.gameOver();
+        }
     }, 1000);
 };
 game.animation = function () {
@@ -675,6 +708,10 @@ game.animation = function () {
 
 };
 game.helper = {
+    gameOver() {
+        this.info.modalMode = 'score';
+        this.info.pause = true;
+    },
     startGame() {
         this.info.modalMode = '';
         this.info.score = 0;
@@ -788,6 +825,9 @@ game.helper = {
         if(lineXFactor === 5) {
             number += 10;
         }
+        if(lineXFactor === 6) {
+            number += 15;
+        }
         switch (this.info.combo) {
             case 2: number += 5; break;
             case 3: number += 10; break;
@@ -806,13 +846,14 @@ game.helper = {
     },
     addCombo(number = 1) {
         if(this.info.combo < 5) {
-            this.info.combo += number;
+            this.info.combo += 1;
         }
+        this.info.xCombo += 1;
     },
     setCombo(number = 1) {
         this.info.combo = number;
     },
-    formateScore: (score) => ('0'.repeat(4 - `${score}`.length)).concat(score),
+    formateScore: (score) => ('0'.repeat(4 - `${score > 9999 ? 9999 : score}`.length)).concat(score),
     getMousePos: function (canvas, evt) {
         var rect = canvas.getBoundingClientRect();
         let x = evt.clientX;
