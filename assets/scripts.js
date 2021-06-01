@@ -4,9 +4,12 @@ let game = {
     height: 1080,
     canvas: null,
     info: {
+        pause: true,
+        timerStart: null,
         score: 0,
         combo: 1,
         time: 150,
+        modalMode: 'start',
     },
     options: {
         fontName: "KulminoituvaRegular",
@@ -42,14 +45,36 @@ let game = {
     },
     ctx: null,
     sprites: {
+        modal: {
+            index: 0,
+            key: 'idle',
+            images: {
+                idle: [
+                    'images/bg.png',
+                    'images/block/ui/Tanuki_2.png',
+                    'images/block/ui/yes.png'
+                ]
+            }
+        },
+        timer: {
+            index: 0,
+            key: 'idle',
+            images: {
+                idle: [
+                    'images/block/ui/timer_3.png',
+                    'images/block/ui/timer_2.png',
+                    'images/block/ui/timer_1.png',
+                ]
+            }
+        },
         volume: {
             index: 0,
             key: 'idle',
-            speed: 0,
+            speed: 5,
             position: {
                 0: { width: 570, height: 50, x: 700, y: 60 },
                 1: { min: 705, max: 1185, point: 945, vector: 'down', blue: { left: 25, right: 55, width: 30 } },
-                2: { min: 695, max: 1245, point: 970, vector: 'down' }
+                2: { min: 695, max: 1245, point: 970, vector: 'up' }
             },
             images: {
                 idle: [ 
@@ -218,6 +243,29 @@ let game = {
                 arrow: 'up',
             }
         },
+        baner: {
+            index: 0,
+            key: 'red',
+            status: 'close',
+            images: {
+                red: [
+                    'images/ban/red/red_banner_0.png',
+                    'images/ban/red/red_banner_1.png',
+                    'images/ban/red/red_banner_2.png',
+                    'images/ban/red/red_banner_3.png',
+                    'images/ban/red/red_banner_4.png',
+                    'images/ban/red/red_banner_5.png',
+                ],
+                blue: [
+                    'images/ban/blue/blue_banner_0.png',
+                    'images/ban/blue/blue_banner_1.png',
+                    'images/ban/blue/blue_banner_2.png',
+                    'images/ban/blue/blue_banner_3.png',
+                    'images/ban/blue/blue_banner_4.png',
+                    'images/ban/blue/blue_banner_5.png',
+                ],
+            }
+        },
         flag1: {
             index: 0,
             key: 'red',
@@ -279,6 +327,19 @@ let game = {
                 ]
             }
         },
+        boom: {
+            index: 0,
+            key: 'idle',
+            visible: false,
+            images: {
+                idle: [ 
+                    'images/boom/flash_0.png',
+                    'images/boom/flash_1.png',
+                    'images/boom/flash_2.png',
+                    'images/boom/flash_3.png',
+                ]
+            }
+        },
     },
     animationOn: {
         people1st: true,
@@ -287,6 +348,7 @@ let game = {
         crowd: true,
         speacer: true,
         flag1: true,
+        boom: true,
     },
     create() {
 
@@ -327,58 +389,92 @@ let game = {
     },
     render: function() {
         const sprites = this.sprites;
-        
         this.ctx.clearRect(0, 0, this.width, this.hight);
-        
+
+
+        /************************************************/
         const people1st = sprites.people1st.loadImg[sprites.people1st.key][sprites.people1st.index];
         const people2st = sprites.people2st.loadImg[sprites.people2st.key][sprites.people2st.index];
         const boy = sprites.boy.loadImg[sprites.boy.key][sprites.boy.index];
-
         const row1 = sprites.row1.loadImg[sprites.row1.key][sprites.row1.index];
         const row2 = sprites.row2.loadImg[sprites.row2.key][sprites.row2.index];
-
         const people2stx = -120;
         const people2sty = -80;
-
         const r1x = 640;
         const r1y = 400;
-
         const r2x = 640;
         const r2y = 400;
-
         const people1stx = -120;
         const people1sty = -80;
+        /************************************************/
 
-        this.ctx.drawImage(sprites.crowd.loadImg[sprites.crowd.key][sprites.crowd.index], 0, 0);
+        this.ctx.drawImage(sprites.crowd.loadImg[sprites.crowd.key][this.info.modalMode ? 0 : sprites.crowd.index], 0, 0);
+        
+        if(this.info.modalMode) {
+            this.ctx.drawImage(sprites.modal.loadImg['idle'][0], 0, 0);
+            switch(this.info.modalMode) {
+                case "start":
+                    this.ctx.fillStyle = "#fff";
+                    this.ctx.font = "22px " + this.options.fontName;
+                    this.ctx.drawImage(sprites.modal.loadImg['idle'][1], 450, 100);
+                    this.ctx.fillText("Правила игры", 900, 515);
+                    const paddingBottom = 30;
+                    const text = [
+                        'Господа, внедрение современных методик прекрасно подходит для ',
+                        'реализации кластеризации усилий. Повседневная практика показывает, ',
+                        'что консультация с широким активом предопределяет высокую',
+                        'востребованность новых предложений. Современные технологии',
+                        'достигли такого уровня, что существующая теория однозначно'
+                    ];
+                    for(const index in text) {
+                        this.ctx.fillText(text[index], 640, 650 + (paddingBottom * index), 700);
+                    }
+                    this.ctx.drawImage(sprites.modal.loadImg['idle'][2], 900, 850, 230, 105);
+                    this.ctx.font = "40px " + this.options.fontName;
+                    this.ctx.fillText("Старт!", 950, 910);
+                    this.ctx.fillStyle = "#000";
+                break;
+                case "countdown":
+                    this.ctx.drawImage(sprites.timer.loadImg['idle'][sprites.timer.index], 750, 320);
+                break;
+            }
+            return false;
+        }
+
         this.ctx.drawImage(people2st, 0, 0, 1920, 429, -110 - people2stx, 650 - people2sty, 1920 + people2stx, 429 + people2sty);
         this.ctx.drawImage(row2, 0, 0, 1280, 720, 640 - r2x, 360 - r2y, 1280 + r2x, 720 + r2y);
-        
-
-        
-        
+        if(sprites.boom.visible) {
+            const boom = sprites.boom.loadImg['idle'][sprites.boom.index];
+            this.ctx.drawImage(boom, 480, 430, 180, 180);
+            this.ctx.drawImage(boom, 610, 480, 180, 180);
+            this.ctx.drawImage(boom, 750, 450, 180, 180);
+            this.ctx.drawImage(boom, 1000, 450, 180, 180);
+            this.ctx.drawImage(boom, 1250, 420, 130, 130);
+            this.ctx.drawImage(boom, 1400, 450, 130, 130);
+        }
         const flagMap = this.options.flagMap;
         for(const comboIndex in flagMap) {
-
             if(comboIndex <= this.info.combo) {
-                if(flagMap[comboIndex].position !== 0) {
-                    flagMap[comboIndex].position -= 10;
-                }
+                if(flagMap[comboIndex].position !== 0) flagMap[comboIndex].position -= 10;
             } else {
-                if(flagMap[comboIndex].position !== 330) {
-                    flagMap[comboIndex].position += 10;
-                }
+                if(flagMap[comboIndex].position !== 330) flagMap[comboIndex].position += 10;
             }
-            
             for(const lll of flagMap[comboIndex].list) {
                 const flag1 = sprites.flag1.loadImg[lll.type][sprites.flag1.index];
                 this.ctx.drawImage(flag1, lll.x, lll.y + flagMap[comboIndex].position, 195, 350);
             }
         }
-
+        const mapBaner = [
+            { x: 395, y: 363, type: "red", width: 250, height: 110 },
+            { x: 900, y: 395, type: "blue", width: 180, height: 100 },
+        ];
+        for(const baner of mapBaner) {
+            const banerImg = sprites.baner.loadImg[baner.type][sprites.baner.index];
+            this.ctx.drawImage(banerImg, baner.x, baner.y, baner.width, baner.height);
+        }
         this.ctx.drawImage(boy, 0, 0, 341, 346, 1570, 708, 341, 346);
         this.ctx.drawImage(people1st, 0, 0, 1920, 429, -110 - people1stx, 590 - people1sty, 1920 + people1stx, 429 + people1sty);
         this.ctx.drawImage(row1, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
-
         /**********************score*************************/
         const score = sprites.score.loadImg[sprites.score.key][sprites.score.index];
         const scoreX = - 650;
@@ -389,7 +485,6 @@ let game = {
         this.ctx.font = "45px " + this.options.fontName;
         this.ctx.fillText(this.formateScore(this.info.score), 135, 100);
         /**********************score*************************/
-
         /**********************score2*************************/
         const score2 = sprites.score2.loadImg[sprites.score2.key][sprites.score2.index];
         const score2X = - 650;
@@ -400,7 +495,6 @@ let game = {
         this.ctx.font = "45px " + this.options.fontName;
         this.ctx.fillText(this.info.combo, 375, 100);
         /**********************score2*************************/
-
         /**********************volueme*************************/
         const positionV = sprites.volume.position;
         const volueme1 = sprites.volume.loadImg['idle'][0];
@@ -410,47 +504,22 @@ let game = {
         this.ctx.drawImage(volueme2, positionV[1].point, 71, 80, 30);
         this.ctx.drawImage(volueme3, positionV[2].point, 35, 30, 45);
         /**********************volueme**************************/
-
         /**********************time*************************/
         this.ctx.fillStyle = "#fff";
         this.ctx.font = "100px " + this.options.fontName;
         this.ctx.fillText(this.gameTime(), 1550, 110);
         /**********************time*************************/
-
-        const buttonJump = sprites.buttonJump.loadImg['idle'];
-
-
-        this.ctx.drawImage(buttonJump[0], 0, 0, 448, 202, 1630, 440, 290, 130);
-        this.ctx.drawImage(buttonJump[1], 0, 0, 448, 202, 1650, 460, 250, 100);
-        this.ctx.font = "40px " + this.options.fontName;
-        this.ctx.fillText("ЖМИ!", 1710, 520);
-
-        // this.ctx.drawImage(
-        //     row1,//sprite
-        //     0,//ball.width
-        //     0,//0
-        //     1280,//ball.width
-        //     720,//ball.height
-        //     640 - r1x,//ball.x
-        //     360 - r1y,//ball.y
-        //     1280 + r1x,//ball.width
-        //     720 + r1y//ball.height
-        // );
         const ruporKey = sprites.speacer.key === 'idle' ? 'idle' : `animate${this.info.combo}`;
         const speacer = sprites.speacer.loadImg[ruporKey][sprites.speacer.index];
         const rotate = sprites.speacer.rotate.list[sprites.speacer.rotate.actual];
-
-        this.ctx.rotate(rotate.rotate * Math.PI / 180);
-
-        if(!speacer) {
-            console.log(speacer, ruporKey, sprites.speacer.index);
-        }
-        
-        //this.ctx.drawImage(speacer, 0, 0, 1965 - speacerx, 2128 - speacery, rotate.x, rotate.y, 1965 + speacerx, 2128 + speacery);
+        this.ctx.rotate(rotate.rotate * Math.PI / 180);        
         this.ctx.drawImage(speacer, rotate.x, rotate.y + (ruporKey === 'idle' ? 0 : 160), 800, ruporKey === 'idle' ? 900 : 700);
-        
         this.ctx.rotate(-rotate.rotate * Math.PI / 180);
-
+        const buttonJump = this.sprites.buttonJump.loadImg['idle'];
+        this.ctx.drawImage(buttonJump[0], 1620, 445, 300, 120);
+        this.ctx.drawImage(buttonJump[1], 1640, 457, 250, 100);
+        this.ctx.font = "40px " + this.options.fontName;
+        this.ctx.fillText("ЖМИ!", 1700, 520);
         this.ctx.fillStyle = "#000";
     },
     update: function() {
@@ -471,51 +540,74 @@ let game = {
     }
 };
 game.initEvent = function () {
-    document.body.onkeydown = (e) => {
-        if(e.keyCode == 32) {
-            const vPosition = this.sprites.volume.position;
-            const pointBlockLeft = vPosition[1].point;
-            const pointBlockRight = vPosition[1].point + 80;
-            const pointArrow = vPosition[2].point + 15;
-            if(pointArrow >= pointBlockLeft && pointArrow <= pointBlockRight) {
-                let number = 1;
-                if((pointBlockLeft + vPosition[1].blue.left) <= pointArrow && (pointBlockLeft + vPosition[1].blue.right) >= pointArrow) {
-                    number = 3;
-                }
-                this.activateSpeacerAnimation();
-                number = this.summXFactorAndAddBonus(number);
-                this.addCombo();
-                this.switchAnimation();
-                this.addScore(number);
-            } else {
-                this.setCombo(1);
-                this.switchAnimation();
+
+    const change = () => {
+        const vPosition = this.sprites.volume.position;
+        const pointBlockLeft = vPosition[1].point;
+        const pointBlockRight = vPosition[1].point + 80;
+        const pointArrow = vPosition[2].point + 15;
+        if(pointArrow >= pointBlockLeft && pointArrow <= pointBlockRight) {
+            let number = 1;
+            if((pointBlockLeft + vPosition[1].blue.left) <= pointArrow && (pointBlockLeft + vPosition[1].blue.right) >= pointArrow) {
+                number = 3;
             }
-        }
-    }
-
-    setInterval(() => this.info.time--, 1000);
-
-    this.canvas.addEventListener("click", event => {
-        let x, y = 0;
-        var canvas = this.canvas;
-        if (event.x != undefined && event.y != undefined) {
-          x = event.x;
-          y = event.y;
+            this.activateSpeacerAnimation();
+            number = this.summXFactorAndAddBonus(number);
+            this.addCombo();
+            this.switchAnimation();
+            this.addScore(number);
         } else {
-          x = event.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
-          y = event.clientY + document.body.scrollTop + document.documentElement.scrollTop;
+            this.setCombo(1);
+            this.switchAnimation();
         }
+    };
+    this.eventButton({
+        event: {
+            click() {
+                if(this.info.modalMode === 'start') {
+                    this.startTimer(function () {
+                        this.startGame();
+                    });
+                }
+            },
+        }
+    }, 900, 850, 230, 105);
+
+    this.eventButton({
+        event: {
+            click() { change() },
+        }
+    }, 1640, 457, 250, 100);
     
-        x += canvas.offsetLeft;
-        y += canvas.offsetTop;
-        console.log(x,y);
-    });
+    document.body.onkeydown = (e) => {
+        if(e.keyCode == 32) change(e);
+    }
+    setInterval(() => {
+        if(this.info.pause) return false;
+        this.sprites.volume.speed += 5;
+    }, 60000);
+    setInterval(() => {
+        if(this.info.pause) return false;
+        this.info.time--;
+    }, 1000);
 };
 game.animation = function () {
+    setInterval(() => {
+        if(this.info.pause) return false;
+        if(this.sprites.baner.status === 'open') {
+            if(this.sprites.baner.index < 5) {
+                this.sprites.baner.index += 1;
+            }
+        } else {
+            if(this.sprites.baner.index >= 1) {
+                this.sprites.baner.index -= 1;
+            } 
+        }
+    }, 200);
     /**********************speacer****************************/
     /******************************************************/
     setInterval(() => {
+        if(this.info.pause) return false;
         const rotate = this.sprites.speacer.rotate;
         if(rotate.actual >= rotate.list.length - 1) {
             rotate.arrow = 'down';
@@ -525,9 +617,20 @@ game.animation = function () {
         rotate.actual += rotate.arrow === 'up' ? 1 : -1;
     }, 10);
     /******************************************************/
+    setInterval(() => {
+        if(this.info.pause) return false;
+        const field = this.sprites['boom'];
+        if(this.animationOn['boom']) {
+            field.index++;
+            if(field.index == field.images[field.key].length) {
+                field.index = 0;
+            }
+        } else field.index = 0;
+    }, 180);
     /******************************************************/
     for (const fieldKey of ['crowd', 'people1st', 'people2st', 'boy', 'flag1']) {
         setInterval(() => {
+            if(this.info.pause) return false;
             const field = this.sprites[fieldKey];
             if(this.animationOn[fieldKey]) {
                 field.index++;
@@ -539,6 +642,7 @@ game.animation = function () {
     }
     for (const fieldKey of ['speacer']) {
         setInterval(() => {
+            if(this.info.pause) return false;
             const field = this.sprites[fieldKey];
             if(this.animationOn[fieldKey]) {
                 field.index++;
@@ -552,6 +656,9 @@ game.animation = function () {
     /**********************volume****************************/
     /******************************************************/
     const moveVolume = (speed, position) => {
+        if(this.info.pause) {
+            return false;
+        }
         position.point += position.vector === 'up' ? speed : -speed;
         if(position.point < position.min) {
             position.vector = 'up'
@@ -568,20 +675,96 @@ game.animation = function () {
 
 };
 game.helper = {
+    startGame() {
+        this.info.modalMode = '';
+        this.info.score = 0;
+        this.info.combo = 1;
+        this.info.time = 150;
+        this.info.pause = false;
+
+        this.animationOn.people1st = true;
+        this.animationOn.people2st = true;
+        this.animationOn.boy = true;
+        this.animationOn.crowd = true;
+        this.animationOn.speacer = true;
+        this.animationOn.flag1 = true;
+        this.animationOn.boom = true;
+    },
+    startTimer(callback = null) {
+        this.sprites.timer.index = 0;
+        this.info.modalMode = 'countdown';
+        this.info.pause = true;
+        setInterval(() => this.sprites.timer.index++ , 1000);
+        this.info.timerStart = setInterval(() => {
+            clearInterval(this.info.timerStart);
+            this.info.timerStart = null;
+            this.info.modalMode = '';
+            if(callback) callback.apply(this);
+        }, 3000);
+    },
+    eventButton(options = {}, x = 0, y = 0, width = 0, height = 0) {
+        let hover = false;
+        const getCursorPosition = (e) => {
+            const canvas = this.canvas;
+            const rect = canvas.getBoundingClientRect();
+            let xV = e.clientX;
+            let yV = e.clientY;
+            if('touches' in e) {
+                xV = e.touches[0].pageX;
+                yV = e.touches[0].pageY;
+            }
+            return {
+                x: (xV - rect.left) / (rect.right - rect.left) * canvas.width,
+                y: (yV - rect.top) / (rect.bottom - rect.top) * canvas.height
+            };
+        }
+        this.canvas.addEventListener("mousemove", (e) => {
+            const position = getCursorPosition(e);
+            const check = (position.x >= x && position.x < x + width && position.y >= y && position.y < y + height);
+            if(check && !hover) {
+                hover = true;
+                this.canvas.style.cursor = "pointer";
+                if(options.event.hover) options.event.hover.apply(this);
+            } else if (!check && hover) {
+                this.canvas.style.cursor = "";
+                hover = false;
+                if(options.event.afterHover) options.event.afterHover.apply(this);
+            }
+        });
+        const clickFunction = (e) => {
+            const position = getCursorPosition(e);
+            const check = (position.x >= x && position.x < x + width && position.y >= y && position.y < y + height);
+            if(check) {
+                options.event.click.apply(this);
+            }
+        };
+
+        if(options.event.click) {
+            this.canvas.addEventListener("mousedown", clickFunction);
+            this.canvas.addEventListener("touch", clickFunction);
+        }
+    },
     switchAnimation() {
-        console.log(this.info.combo);
         if(this.info.combo <= 1) {
             this.sprites.people1st.index = 0;
             this.sprites.people2st.index = 0;
+            this.sprites.boy.index = 0;
             this.sprites.people1st.key = 'idle';
             this.sprites.people2st.key = 'idle';
+            this.sprites.boy.key = 'idle';
+            this.sprites.baner.status = 'close';
+            this.sprites.boom.visible = false;
         } else if (this.info.combo == 2) {
             this.sprites.people1st.index = 0;
             this.sprites.people2st.index = 0;
+            this.sprites.boy.index = 0;
             this.sprites.people1st.key = 'joy';
             this.sprites.people2st.key = 'joy';
+            this.sprites.boy.key = 'joy';
+        } else if (this.info.combo === 5) {
+            this.sprites.baner.status = 'open';
+            this.sprites.boom.visible = true;
         }
-
     },
     activateSpeacerAnimation() {
         this.sprites.speacer.key = 'animate';
@@ -627,7 +810,7 @@ game.helper = {
         }
     },
     setCombo(number = 1) {
-        this.info.combo = 1;
+        this.info.combo = number;
     },
     formateScore: (score) => ('0'.repeat(4 - `${score}`.length)).concat(score),
     getMousePos: function (canvas, evt) {
