@@ -1,3 +1,4 @@
+const path = window.location.host === "tanukichampion.ru" ? "/assets/game2/" : "";
 let game = {
     statusGame: undefined,
     width: 1920,
@@ -56,14 +57,14 @@ let game = {
             key: 'idle',
             images: {
                 idle: [
-                    'images/bg.png',
-                    'images/block/ui/Tanuki_2.png',
-                    'images/block/ui/yes.png',
-                    'images/block/ui/Tanuki_score_2.png',
-                    'images/block/ui/Tanuki_score_1.png',
-                    'images/block/ui/Tanuki_score_3.png',
-                    'images/block/ui/Tanuki_1.png',
-                    'images/block/button.png'
+                    path + 'images/bg.png',
+                    path + 'images/block/ui/Tanuki_2.png',
+                    path + 'images/block/ui/yes.png',
+                    path + 'images/block/ui/Tanuki_score_2.png',
+                    path + 'images/block/ui/Tanuki_score_1.png',
+                    path + 'images/block/ui/Tanuki_score_3.png',
+                    path + 'images/block/ui/Tanuki_1.png',
+                    path + 'images/block/button.png'
                 ]
             }
         },
@@ -72,9 +73,9 @@ let game = {
             key: 'idle',
             images: {
                 idle: [
-                    'images/block/ui/timer_3.png',
-                    'images/block/ui/timer_2.png',
-                    'images/block/ui/timer_1.png',
+                    path + 'images/block/ui/timer_3.png',
+                    path + 'images/block/ui/timer_2.png',
+                    path + 'images/block/ui/timer_1.png',
                 ]
             }
         },
@@ -89,9 +90,9 @@ let game = {
             },
             images: {
                 idle: [ 
-                    'images/block/volume_level_1.png',
-                    'images/block/volume_level_2.png',
-                    'images/block/volume_level_3.png',
+                    path + 'images/block/volume_level_1.png',
+                    path + 'images/block/volume_level_2.png',
+                    path + 'images/block/volume_level_3.png',
                 ]
             } 
         },
@@ -99,14 +100,14 @@ let game = {
             index: 0,
             key: 'idle',
             images: {
-                idle: [ 'images/score_1.png' ]
+                idle: [ path + 'images/score_1.png' ]
             }
         },
         score2: {
             index: 0,
             key: 'idle',
             images: {
-                idle: [ 'images/score_2.png' ]
+                idle: [ path + 'images/score_2.png' ]
             }
         },
         crowd: {
@@ -114,10 +115,10 @@ let game = {
             key: 'idle',
             images: {
                 idle: [
-                    'images/crowd/crowd_1.png',
-                    'images/crowd/crowd_2.png',
-                    'images/crowd/crowd_3.png',
-                    'images/crowd/crowd_4.png',
+                    path + 'images/crowd/crowd_1.png',
+                    path + 'images/crowd/crowd_2.png',
+                    path + 'images/crowd/crowd_3.png',
+                    path + 'images/crowd/crowd_4.png',
                 ]
             },
         },
@@ -126,18 +127,18 @@ let game = {
             key: 'idle',
             images: {
                 idle: [
-                    'images/people/st1/idle/1st_people_idle_0.png',
-                    'images/people/st1/idle/1st_people_idle_1.png',
-                    'images/people/st1/idle/1st_people_idle_2.png',
-                    'images/people/st1/idle/1st_people_idle_3.png',
+                    path + 'images/people/st1/idle/1st_people_idle_0.png',
+                    path + 'images/people/st1/idle/1st_people_idle_1.png',
+                    path + 'images/people/st1/idle/1st_people_idle_2.png',
+                    path + 'images/people/st1/idle/1st_people_idle_3.png',
                 ],
                 joy: [
-                    'images/people/st1/joy/1st_people_joy_0.png',
-                    'images/people/st1/joy/1st_people_joy_1.png',
-                    'images/people/st1/joy/1st_people_joy_2.png',
-                    'images/people/st1/joy/1st_people_joy_3.png',
-                    'images/people/st1/joy/1st_people_joy_4.png',
-                    'images/people/st1/joy/1st_people_joy_5.png',
+                    path + 'images/people/st1/joy/1st_people_joy_0.png',
+                    path + 'images/people/st1/joy/1st_people_joy_1.png',
+                    path + 'images/people/st1/joy/1st_people_joy_2.png',
+                    path + 'images/people/st1/joy/1st_people_joy_3.png',
+                    path + 'images/people/st1/joy/1st_people_joy_4.png',
+                    path + 'images/people/st1/joy/1st_people_joy_5.png',
                 ]
             }
         },
@@ -146,18 +147,18 @@ let game = {
             key: 'idle',
             images: {
                 idle: [
-                    'images/people/st2/idle/2nd_people_idle_0.png',
-                    'images/people/st2/idle/2nd_people_idle_1.png',
-                    'images/people/st2/idle/2nd_people_idle_2.png',
-                    'images/people/st2/idle/2nd_people_idle_3.png',
+                    path + 'images/people/st2/idle/2nd_people_idle_0.png',
+                    path + 'images/people/st2/idle/2nd_people_idle_1.png',
+                    path + 'images/people/st2/idle/2nd_people_idle_2.png',
+                    path + 'images/people/st2/idle/2nd_people_idle_3.png',
                 ],
                 joy: [
-                    'images/people/st2/joy/2nd_people_joy_0.png',
-                    'images/people/st2/joy/2nd_people_joy_1.png',
-                    'images/people/st2/joy/2nd_people_joy_2.png',
-                    'images/people/st2/joy/2nd_people_joy_3.png',
-                    'images/people/st2/joy/2nd_people_joy_4.png',
-                    'images/people/st2/joy/2nd_people_joy_5.png',
+                    path + 'images/people/st2/joy/2nd_people_joy_0.png',
+                    path + 'images/people/st2/joy/2nd_people_joy_1.png',
+                    path + 'images/people/st2/joy/2nd_people_joy_2.png',
+                    path + 'images/people/st2/joy/2nd_people_joy_3.png',
+                    path + 'images/people/st2/joy/2nd_people_joy_4.png',
+                    path + 'images/people/st2/joy/2nd_people_joy_5.png',
                 ]
             }
         },
@@ -166,18 +167,18 @@ let game = {
             key: 'idle',
             images: {
                 idle: [
-                    'images/people/boy/idle/boy_idle_0.png',
-                    'images/people/boy/idle/boy_idle_1.png',
-                    'images/people/boy/idle/boy_idle_2.png',
-                    'images/people/boy/idle/boy_idle_3.png',
+                    path + 'images/people/boy/idle/boy_idle_0.png',
+                    path + 'images/people/boy/idle/boy_idle_1.png',
+                    path + 'images/people/boy/idle/boy_idle_2.png',
+                    path + 'images/people/boy/idle/boy_idle_3.png',
                 ],
                 joy: [
-                    'images/people/boy/joy/boy_joy_0.png',
-                    'images/people/boy/joy/boy_joy_1.png',
-                    'images/people/boy/joy/boy_joy_2.png',
-                    'images/people/boy/joy/boy_joy_3.png',
-                    'images/people/boy/joy/boy_joy_4.png',
-                    'images/people/boy/joy/boy_joy_5.png',
+                    path + 'images/people/boy/joy/boy_joy_0.png',
+                    path + 'images/people/boy/joy/boy_joy_1.png',
+                    path + 'images/people/boy/joy/boy_joy_2.png',
+                    path + 'images/people/boy/joy/boy_joy_3.png',
+                    path + 'images/people/boy/joy/boy_joy_4.png',
+                    path + 'images/people/boy/joy/boy_joy_5.png',
                 ]
             }
         },
@@ -185,57 +186,57 @@ let game = {
             index: 0,
             key: 'idle',
             images: {
-                idle: [ 'images/row/row_1.png' ]
+                idle: [ path + 'images/row/row_1.png' ]
             }
         },
         row2: {
             index: 0,
             key: 'idle',
             images: {
-                idle: [ 'images/row/row_2.png' ]
+                idle: [ path + 'images/row/row_2.png' ]
             }
         },
         buttonJump: {
             index: 0,
             key: 'idle',
             images: {
-                idle: [ 'images/block/start_jump_button.png', 'images/block/button.png' ]
+                idle: [ path + 'images/block/start_jump_button.png', path + 'images/block/button.png' ]
             }
         },
         speacer: {
             index: 0,
             key: 'idle',
             images: {
-                idle: [ 'images/speaker/1/Speaker_1_1.png' ],
+                idle: [ path + 'images/speaker/1/Speaker_1_1.png' ],
                 animate1: [
-                    'images/speaker/1/Speaker_1_1.png',
-                    'images/speaker/1/Speaker_1_2.png',
-                    'images/speaker/1/Speaker_1_3.png',
-                    'images/speaker/1/Speaker_1_4.png',
+                    path + 'images/speaker/1/Speaker_1_1.png',
+                    path + 'images/speaker/1/Speaker_1_2.png',
+                    path + 'images/speaker/1/Speaker_1_3.png',
+                    path + 'images/speaker/1/Speaker_1_4.png',
                 ],
                 animate2: [
-                    'images/speaker/2/Speaker_2_1.png',
-                    'images/speaker/2/Speaker_2_2.png',
-                    'images/speaker/2/Speaker_2_3.png',
-                    'images/speaker/2/Speaker_2_4.png',
+                    path + 'images/speaker/2/Speaker_2_1.png',
+                    path + 'images/speaker/2/Speaker_2_2.png',
+                    path + 'images/speaker/2/Speaker_2_3.png',
+                    path + 'images/speaker/2/Speaker_2_4.png',
                 ],
                 animate3: [
-                    'images/speaker/3/Speaker_3_1.png',
-                    'images/speaker/3/Speaker_3_2.png',
-                    'images/speaker/3/Speaker_3_3.png',
-                    'images/speaker/3/Speaker_3_4.png',
+                    path + 'images/speaker/3/Speaker_3_1.png',
+                    path + 'images/speaker/3/Speaker_3_2.png',
+                    path + 'images/speaker/3/Speaker_3_3.png',
+                    path + 'images/speaker/3/Speaker_3_4.png',
                 ],
                 animate4: [
-                    'images/speaker/4/Speaker_4_1.png',
-                    'images/speaker/4/Speaker_4_2.png',
-                    'images/speaker/4/Speaker_4_3.png',
-                    'images/speaker/4/Speaker_4_4.png',
+                    path + 'images/speaker/4/Speaker_4_1.png',
+                    path + 'images/speaker/4/Speaker_4_2.png',
+                    path + 'images/speaker/4/Speaker_4_3.png',
+                    path + 'images/speaker/4/Speaker_4_4.png',
                 ],
                 animate5: [
-                    'images/speaker/5/Speaker_5_1.png',
-                    'images/speaker/5/Speaker_5_2.png',
-                    'images/speaker/5/Speaker_5_3.png',
-                    'images/speaker/5/Speaker_5_4.png',
+                    path + 'images/speaker/5/Speaker_5_1.png',
+                    path + 'images/speaker/5/Speaker_5_2.png',
+                    path + 'images/speaker/5/Speaker_5_3.png',
+                    path + 'images/speaker/5/Speaker_5_4.png',
                 ],
             },
             rotate: {
@@ -260,20 +261,20 @@ let game = {
             status: 'close',
             images: {
                 red: [
-                    'images/ban/red/red_banner_0.png',
-                    'images/ban/red/red_banner_1.png',
-                    'images/ban/red/red_banner_2.png',
-                    'images/ban/red/red_banner_3.png',
-                    'images/ban/red/red_banner_4.png',
-                    'images/ban/red/red_banner_5.png',
+                    path + 'images/ban/red/red_banner_0.png',
+                    path + 'images/ban/red/red_banner_1.png',
+                    path + 'images/ban/red/red_banner_2.png',
+                    path + 'images/ban/red/red_banner_3.png',
+                    path + 'images/ban/red/red_banner_4.png',
+                    path + 'images/ban/red/red_banner_5.png',
                 ],
                 blue: [
-                    'images/ban/blue/blue_banner_0.png',
-                    'images/ban/blue/blue_banner_1.png',
-                    'images/ban/blue/blue_banner_2.png',
-                    'images/ban/blue/blue_banner_3.png',
-                    'images/ban/blue/blue_banner_4.png',
-                    'images/ban/blue/blue_banner_5.png',
+                    path + 'images/ban/blue/blue_banner_0.png',
+                    path + 'images/ban/blue/blue_banner_1.png',
+                    path + 'images/ban/blue/blue_banner_2.png',
+                    path + 'images/ban/blue/blue_banner_3.png',
+                    path + 'images/ban/blue/blue_banner_4.png',
+                    path + 'images/ban/blue/blue_banner_5.png',
                 ],
             }
         },
@@ -282,59 +283,59 @@ let game = {
             key: 'red',
             images: {
                 red: [ 
-                    //'images/flag/red/red_flag_0.png',
-                    //'images/flag/red/red_flag_1.png',
-                    'images/flag/red/red_flag_2.png',
-                    'images/flag/red/red_flag_3.png',
-                    'images/flag/red/red_flag_4.png',
-                    'images/flag/red/red_flag_5.png',
-                    'images/flag/red/red_flag_6.png',
-                    'images/flag/red/red_flag_7.png',
-                    'images/flag/red/red_flag_8.png',
-                    'images/flag/red/red_flag_9.png',
-                    //'images/flag/red/red_flag_10.png',
-                    //'images/flag/red/red_flag_11.png',
+                    //path + 'images/flag/red/red_flag_0.png',
+                    //path + 'images/flag/red/red_flag_1.png',
+                    path + 'images/flag/red/red_flag_2.png',
+                    path + 'images/flag/red/red_flag_3.png',
+                    path + 'images/flag/red/red_flag_4.png',
+                    path + 'images/flag/red/red_flag_5.png',
+                    path + 'images/flag/red/red_flag_6.png',
+                    path + 'images/flag/red/red_flag_7.png',
+                    path + 'images/flag/red/red_flag_8.png',
+                    path + 'images/flag/red/red_flag_9.png',
+                    //path + 'images/flag/red/red_flag_10.png',
+                    //path + 'images/flag/red/red_flag_11.png',
                 ],
                 blue: [ 
-                    //'images/flag/blue/red_flag_0.png',
-                    //'images/flag/blue/red_flag_1.png',
-                    'images/flag/blue/red_flag_2.png',
-                    'images/flag/blue/red_flag_3.png',
-                    'images/flag/blue/red_flag_4.png',
-                    'images/flag/blue/red_flag_5.png',
-                    'images/flag/blue/red_flag_6.png',
-                    'images/flag/blue/red_flag_7.png',
-                    'images/flag/blue/red_flag_8.png',
-                    'images/flag/blue/red_flag_9.png',
-                    //'images/flag/blue/red_flag_10.png',
-                    //'images/flag/blue/red_flag_11.png',
+                    //path + 'images/flag/blue/red_flag_0.png',
+                    //path + 'images/flag/blue/red_flag_1.png',
+                    path + 'images/flag/blue/red_flag_2.png',
+                    path + 'images/flag/blue/red_flag_3.png',
+                    path + 'images/flag/blue/red_flag_4.png',
+                    path + 'images/flag/blue/red_flag_5.png',
+                    path + 'images/flag/blue/red_flag_6.png',
+                    path + 'images/flag/blue/red_flag_7.png',
+                    path + 'images/flag/blue/red_flag_8.png',
+                    path + 'images/flag/blue/red_flag_9.png',
+                    //path + 'images/flag/blue/red_flag_10.png',
+                    //path + 'images/flag/blue/red_flag_11.png',
                 ],
                 rus: [
-                    'images/flag/rus/RUS_flag_0.png',
-                    'images/flag/rus/RUS_flag_1.png',
-                    'images/flag/rus/RUS_flag_2.png',
-                    'images/flag/rus/RUS_flag_3.png',
-                    'images/flag/rus/RUS_flag_4.png',
-                    'images/flag/rus/RUS_flag_5.png',
-                    'images/flag/rus/RUS_flag_6.png',
-                    'images/flag/rus/RUS_flag_7.png',
-                    'images/flag/rus/RUS_flag_8.png',
-                    'images/flag/rus/RUS_flag_9.png',
-                    'images/flag/rus/RUS_flag_10.png',
-                    'images/flag/rus/RUS_flag_11.png',
+                    path + 'images/flag/rus/RUS_flag_0.png',
+                    path + 'images/flag/rus/RUS_flag_1.png',
+                    path + 'images/flag/rus/RUS_flag_2.png',
+                    path + 'images/flag/rus/RUS_flag_3.png',
+                    path + 'images/flag/rus/RUS_flag_4.png',
+                    path + 'images/flag/rus/RUS_flag_5.png',
+                    path + 'images/flag/rus/RUS_flag_6.png',
+                    path + 'images/flag/rus/RUS_flag_7.png',
+                    path + 'images/flag/rus/RUS_flag_8.png',
+                    path + 'images/flag/rus/RUS_flag_9.png',
+                    path + 'images/flag/rus/RUS_flag_10.png',
+                    path + 'images/flag/rus/RUS_flag_11.png',
                 ],
                 logo: [
-                    'images/flag/hand/Logo_hand_0.png',
-                    'images/flag/hand/Logo_hand_1.png',
-                    'images/flag/hand/Logo_hand_2.png',
-                    'images/flag/hand/Logo_hand_3.png',
-                    'images/flag/hand/Logo_hand_0.png',
-                    'images/flag/hand/Logo_hand_1.png',
-                    'images/flag/hand/Logo_hand_2.png',
-                    'images/flag/hand/Logo_hand_3.png',
-                    'images/flag/hand/Logo_hand_0.png',
-                    'images/flag/hand/Logo_hand_1.png',
-                    'images/flag/hand/Logo_hand_2.png',
+                    path + 'images/flag/hand/Logo_hand_0.png',
+                    path + 'images/flag/hand/Logo_hand_1.png',
+                    path + 'images/flag/hand/Logo_hand_2.png',
+                    path + 'images/flag/hand/Logo_hand_3.png',
+                    path + 'images/flag/hand/Logo_hand_0.png',
+                    path + 'images/flag/hand/Logo_hand_1.png',
+                    path + 'images/flag/hand/Logo_hand_2.png',
+                    path + 'images/flag/hand/Logo_hand_3.png',
+                    path + 'images/flag/hand/Logo_hand_0.png',
+                    path + 'images/flag/hand/Logo_hand_1.png',
+                    path + 'images/flag/hand/Logo_hand_2.png',
                 ]
             }
         },
@@ -344,10 +345,10 @@ let game = {
             visible: false,
             images: {
                 idle: [ 
-                    'images/boom/flash_0.png',
-                    'images/boom/flash_1.png',
-                    'images/boom/flash_2.png',
-                    'images/boom/flash_3.png',
+                    path + 'images/boom/flash_0.png',
+                    path + 'images/boom/flash_1.png',
+                    path + 'images/boom/flash_2.png',
+                    path + 'images/boom/flash_3.png',
                 ]
             }
         },
@@ -426,6 +427,8 @@ let game = {
         
         if(this.info.modalMode) {
             this.ctx.drawImage(sprites.modal.loadImg['idle'][0], 0, 0);
+            this.ctx.drawImage(row2, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
+            this.ctx.drawImage(row1, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
             this.ctx.fillStyle = "#fff";
             switch(this.info.modalMode) {
                 case "start":
