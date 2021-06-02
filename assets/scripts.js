@@ -10,7 +10,12 @@ let game = {
         combo: 1,
         xCombo: 0,
         time: null,
+        userName: '',
         modalMode: 'start',
+        scoreInfo: {
+            min: 49,
+            middle: 199,
+        }
     },
     options: {
         fontName: "KulminoituvaRegular",
@@ -357,7 +362,10 @@ let game = {
         boom: true,
     },
     create() {
-
+        const userName = document.querySelector('[data-user-name]');
+        if(userName) {
+            this.userName = userName.dataset.userName;
+        }
     },
     start() {
         for(const i in this.helper) {
@@ -426,7 +434,7 @@ let game = {
                     this.ctx.fillText("Тануки", 900, 515);
                     const paddingBottom = 35;
                     const text = [
-                        'Привет, USERNAME! Давай поддержим наших',
+                        `Привет, ${this.userName}! Давай поддержим наших`,
                         'спортсменов аплодисментами. Просто повторяй',
                         'за мной и хлопай в ритм, чтобы заработать',
                         'побольше баллов! Готов? Тогда жми «СТАРТ!»'
@@ -443,11 +451,13 @@ let game = {
                 break;
                 case "score":
                     let face = 5;
-                    if(this.info.score < 500) {
+                    
+                    if(this.info.score <= this.info.scoreInfo.min) {
                         face = 6;
-                    } else if (this.info.score < 1000) {
+                    } else if (this.info.score <= this.info.scoreInfo.middle) {
                         face = 4;
                     }
+
                     this.ctx.drawImage(sprites.modal.loadImg['idle'][face], 450, 100);
                     if(face === 6) {
                         this.ctx.textAlign = 'center';
@@ -613,13 +623,9 @@ game.initEvent = function () {
     this.eventButton({
         event: {
             hover() {
-                if(this.info.modalMode === 'start') {
-                    this.canvas.style.cursor = "pointer";
-                }
+                if(this.info.modalMode === 'start') this.canvas.style.cursor = "pointer";
             },
-            afterHover() {
-                this.canvas.style.cursor = "";
-            },
+            afterHover() { this.canvas.style.cursor = "" },
             click() {
                 if(this.info.modalMode === 'start') {
                     this.startTimer(function () {
@@ -633,9 +639,7 @@ game.initEvent = function () {
     this.eventButton({
         event: {
             hover() {
-                if(this.info.modalMode === '') {
-                    this.canvas.style.cursor = "pointer";
-                }
+                if(this.info.modalMode === '') this.canvas.style.cursor = "pointer";
             },
             afterHover() {
                 this.canvas.style.cursor = "";
@@ -645,28 +649,23 @@ game.initEvent = function () {
     }, 1640, 457, 250, 100);
     
     this.eventButton({
-        hover() {
-            console.log(1);
-            if(this.info.modalMode === 'score') {
-                this.canvas.style.cursor = "pointer";
-            }
-        },
-        afterHover() { this.canvas.style.cursor = ""; },
         event: {
+            hover() {
+                if(this.info.modalMode === 'score') this.canvas.style.cursor = "pointer";
+            },
+            afterHover() { this.canvas.style.cursor = ""; },
             click() {
-
+                this.startGame();
             }
         }
     }, 1600, 530, 230, 105);
     
     this.eventButton({
-        hover() {
-            if(this.info.modalMode === 'score') {
-                this.canvas.style.cursor = "pointer";
-            }
-        },
-        afterHover() { this.canvas.style.cursor = ""; },
         event: {
+            hover() {
+                if(this.info.modalMode === 'score') this.canvas.style.cursor = "pointer";
+            },
+            afterHover() { this.canvas.style.cursor = ""; },
             click() {
                 
             }
@@ -775,6 +774,19 @@ game.helper = {
     gameOver() {
         this.info.modalMode = 'score';
         this.info.pause = true;
+        if(this.info.score > this.info.scoreInfo.min) {
+            const formData = new FormData();
+            
+            formData.append('score', this.info.score);
+            formData.append('gameType', 'game2');
+
+            try {
+                fetch('/ajax/jump.php', { method: 'POST', body: formData });
+            } catch (error) {
+                console.error('Ошибка:', error);
+            }
+        }
+
     },
     startGame() {
         this.info.modalMode = '';
@@ -783,7 +795,7 @@ game.helper = {
         this.info.xCombo = 0;
         this.info.time = 150;
         this.info.pause = false;
-
+        this.switchAnimation();
         this.animationOn.people1st = true;
         this.animationOn.people2st = true;
         this.animationOn.boy = true;
