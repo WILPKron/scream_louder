@@ -781,7 +781,7 @@ game.helper = {
         this.info.score = 0;
         this.info.combo = 1;
         this.info.xCombo = 0;
-        this.info.time = 2;
+        this.info.time = 150;
         this.info.pause = false;
 
         this.animationOn.people1st = true;
@@ -916,7 +916,7 @@ game.helper = {
     setCombo(number = 1) {
         this.info.combo = number;
     },
-    formateScore: (score) => ('0'.repeat(4 - `${score > 9999 ? 9999 : score}`.length)).concat(score),
+    formateScore: (score) => score > 9999 ? score : ('0'.repeat(4 - `${score}`.length)).concat(score),
     getMousePos: function (canvas, evt) {
         var rect = canvas.getBoundingClientRect();
         let x = evt.clientX;
