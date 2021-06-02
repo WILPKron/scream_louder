@@ -4,12 +4,12 @@ let game = {
     height: 1080,
     canvas: null,
     info: {
-        pause: true ,
+        pause: true,
         timerStart: null,
         score: 0,
         combo: 1,
         xCombo: 0,
-        time: 10,
+        time: null,
         modalMode: 'start',
     },
     options: {
@@ -57,6 +57,8 @@ let game = {
                     'images/block/ui/Tanuki_score_2.png',
                     'images/block/ui/Tanuki_score_1.png',
                     'images/block/ui/Tanuki_score_3.png',
+                    'images/block/ui/Tanuki_1.png',
+                    'images/block/button.png'
                 ]
             }
         },
@@ -74,7 +76,7 @@ let game = {
         volume: {
             index: 0,
             key: 'idle',
-            speed: 5,
+            speed: 0,
             position: {
                 0: { width: 570, height: 50, x: 700, y: 60 },
                 1: { min: 705, max: 1185, point: 945, vector: 'down', blue: { left: 25, right: 55, width: 30 } },
@@ -419,19 +421,18 @@ let game = {
             this.ctx.fillStyle = "#fff";
             switch(this.info.modalMode) {
                 case "start":
-                    this.ctx.font = "22px " + this.options.fontName;
+                    this.ctx.font = "25px " + this.options.fontName;
                     this.ctx.drawImage(sprites.modal.loadImg['idle'][1], 450, 100);
-                    this.ctx.fillText("Правила игры", 900, 515);
-                    const paddingBottom = 30;
+                    this.ctx.fillText("Тануки", 900, 515);
+                    const paddingBottom = 35;
                     const text = [
-                        'Господа, внедрение современных методик прекрасно подходит для ',
-                        'реализации кластеризации усилий. Повседневная практика показывает, ',
-                        'что консультация с широким активом предопределяет высокую',
-                        'востребованность новых предложений. Современные технологии',
-                        'достигли такого уровня, что существующая теория однозначно'
+                        'Привет, USERNAME! Давай поддержим наших',
+                        'спортсменов аплодисментами. Просто повторяй',
+                        'за мной и хлопай в ритм, чтобы заработать',
+                        'побольше баллов! Готов? Тогда жми «СТАРТ!»'
                     ];
                     for(const index in text) {
-                        this.ctx.fillText(text[index], 640, 650 + (paddingBottom * index), 700);
+                        this.ctx.fillText(text[index], 690, 660 + (paddingBottom * index));
                     }
                     this.ctx.drawImage(sprites.modal.loadImg['idle'][2], 900, 850, 230, 105);
                     this.ctx.font = "40px " + this.options.fontName;
@@ -443,24 +444,42 @@ let game = {
                 case "score":
                     let face = 5;
                     if(this.info.score < 500) {
-                        face = 3;
+                        face = 6;
                     } else if (this.info.score < 1000) {
                         face = 4;
                     }
                     this.ctx.drawImage(sprites.modal.loadImg['idle'][face], 450, 100);
-                    this.ctx.font = "25px " + this.options.fontName;
-                    this.ctx.fillText("Тануки", 900, 517);
-                    this.ctx.textAlign = 'center';
-                    this.ctx.font = "75px " + this.options.fontName;
-                    this.ctx.fillText(this.info.xCombo, 785, 670);
-                    this.ctx.font = "40px " + this.options.fontName;
-                    this.ctx.fillText("КОМБО", 785, 740);
+                    if(face === 6) {
+                        this.ctx.textAlign = 'center';
+                            this.ctx.font = "40px " + this.options.fontName;
+                            this.ctx.fillText("Ты набрал мало очков!", 1000, 680);
+                            this.ctx.fillText("Хочешь попробовать еще раз?", 1000, 725);
 
-                    this.ctx.font = "75px " + this.options.fontName;
-                    this.ctx.fillText(this.formateScore(this.info.score), 1195, 670);
-                    this.ctx.font = "40px " + this.options.fontName;
-                    this.ctx.fillText("БАЛЛЫ", 1200, 740);
-                    this.ctx.textAlign = 'left';
+                            this.ctx.drawImage(sprites.modal.loadImg['idle'][2], 1600, 530, 230, 105);
+                            this.ctx.font = "40px " + this.options.fontName;
+                            this.ctx.fillText("ДА!", 1715, 595);
+
+                            this.ctx.drawImage(sprites.modal.loadImg['idle'][7], 1600, 720, 230, 105);
+                            this.ctx.font = "40px " + this.options.fontName;
+                            this.ctx.fillText("НЕТ!", 1715, 782);
+
+                        this.ctx.textAlign = 'left';
+                    } else {
+                        this.ctx.font = "25px " + this.options.fontName;
+                        this.ctx.fillText("Тануки", 900, 517);
+                        this.ctx.textAlign = 'center';
+                            this.ctx.font = "75px " + this.options.fontName;
+                            this.ctx.fillText(this.info.xCombo, 785, 670);
+                            this.ctx.font = "40px " + this.options.fontName;
+                            this.ctx.fillText("КОМБО", 785, 740);
+        
+                            this.ctx.font = "75px " + this.options.fontName;
+                            this.ctx.fillText(this.formateScore(this.info.score), 1195, 670);
+                            this.ctx.font = "40px " + this.options.fontName;
+                            this.ctx.fillText("БАЛЛЫ", 1200, 740);
+                        this.ctx.textAlign = 'left';
+                    }
+
                 break;
             }
             this.ctx.fillStyle = "#000";
@@ -593,6 +612,14 @@ game.initEvent = function () {
     };
     this.eventButton({
         event: {
+            hover() {
+                if(this.info.modalMode === 'start') {
+                    this.canvas.style.cursor = "pointer";
+                }
+            },
+            afterHover() {
+                this.canvas.style.cursor = "";
+            },
             click() {
                 if(this.info.modalMode === 'start') {
                     this.startTimer(function () {
@@ -605,10 +632,47 @@ game.initEvent = function () {
 
     this.eventButton({
         event: {
+            hover() {
+                if(this.info.modalMode === '') {
+                    this.canvas.style.cursor = "pointer";
+                }
+            },
+            afterHover() {
+                this.canvas.style.cursor = "";
+            },
             click() { change() },
         }
     }, 1640, 457, 250, 100);
     
+    this.eventButton({
+        hover() {
+            console.log(1);
+            if(this.info.modalMode === 'score') {
+                this.canvas.style.cursor = "pointer";
+            }
+        },
+        afterHover() { this.canvas.style.cursor = ""; },
+        event: {
+            click() {
+
+            }
+        }
+    }, 1600, 530, 230, 105);
+    
+    this.eventButton({
+        hover() {
+            if(this.info.modalMode === 'score') {
+                this.canvas.style.cursor = "pointer";
+            }
+        },
+        afterHover() { this.canvas.style.cursor = ""; },
+        event: {
+            click() {
+                
+            }
+        }
+    }, 1600, 720, 230, 105);
+
     document.body.onkeydown = (e) => {
         if(e.keyCode == 32) change(e);
     }
@@ -716,7 +780,8 @@ game.helper = {
         this.info.modalMode = '';
         this.info.score = 0;
         this.info.combo = 1;
-        this.info.time = 150;
+        this.info.xCombo = 0;
+        this.info.time = 2;
         this.info.pause = false;
 
         this.animationOn.people1st = true;
@@ -760,10 +825,8 @@ game.helper = {
             const check = (position.x >= x && position.x < x + width && position.y >= y && position.y < y + height);
             if(check && !hover) {
                 hover = true;
-                this.canvas.style.cursor = "pointer";
                 if(options.event.hover) options.event.hover.apply(this);
             } else if (!check && hover) {
-                this.canvas.style.cursor = "";
                 hover = false;
                 if(options.event.afterHover) options.event.afterHover.apply(this);
             }
