@@ -82,7 +82,7 @@ let game = {
         volume: {
             index: 0,
             key: 'idle',
-            speed: 0,
+            speed: -2,
             position: {
                 0: { width: 570, height: 50, x: 700, y: 60 },
                 1: { min: 705, max: 1185, point: 945, vector: 'down', blue: { left: 25, right: 55, width: 30 } },
@@ -436,12 +436,14 @@ let game = {
                     this.ctx.drawImage(sprites.modal.loadImg['idle'][1], 450, 100);
                     this.ctx.fillText("Тануки", 900, 515);
                     const paddingBottom = 35;
+                    this.ctx.textAlign = 'center';
                     const text = [
                         `Привет, ${this.userName}! Давай поддержим наших`,
                         'спортсменов аплодисментами. Просто повторяй',
                         'за мной и хлопай в ритм, чтобы заработать',
                         'побольше баллов! Готов? Тогда жми «СТАРТ!»'
                     ];
+                    this.ctx.textAlign = 'left';
                     for(const index in text) {
                         this.ctx.fillText(text[index], 690, 660 + (paddingBottom * index));
                     }
@@ -534,12 +536,15 @@ let game = {
         this.ctx.drawImage(people1st, 0, 0, 1920, 429, -110 - people1stx, 590 - people1sty, 1920 + people1stx, 429 + people1sty);
         this.ctx.drawImage(row1, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
         this.ctx.textAlign = 'center';
+
+        this.ctx.fillStyle = "#504a70";
         /**********************score*************************/
         const score = sprites.score.loadImg[sprites.score.key][sprites.score.index];
         const scoreX = - 650;
         const scoreY = - 300;
         this.ctx.font = "25px " + this.options.fontName;
         this.ctx.fillText("ОЧКИ", 190, 40);
+        //
         this.ctx.drawImage(score, 0, 0, 954 - scoreX, 417 - scoreY, 100, 50, 954 + scoreX, 417 + scoreY);
         this.ctx.font = "45px " + this.options.fontName;
         this.ctx.fillText(this.formateScore(this.info.score), 190, 100);
@@ -551,9 +556,12 @@ let game = {
         this.ctx.font = "25px " + this.options.fontName;
         this.ctx.fillText("КОМБО", 390, 40);
         this.ctx.drawImage(score2, 0, 0, 954 - score2X, 417 - score2Y, 320, 50, 954 + score2X, 417 + score2Y);
-        this.ctx.font = "45px " + this.options.fontName;
+        this.ctx.font = "45px KulminoituvaRegularNumber";
         this.ctx.fillText(this.info.combo, 385, 100);
         /**********************score2*************************/
+
+        this.ctx.fillStyle = "#fff";
+
         this.ctx.textAlign = 'left';
         /**********************volueme*************************/
         const positionV = sprites.volume.position;
@@ -566,7 +574,7 @@ let game = {
         /**********************volueme**************************/
         /**********************time*************************/
         this.ctx.fillStyle = "#fff";
-        this.ctx.font = "100px " + this.options.fontName;
+        this.ctx.font = "100px KulminoituvaRegularNumber";
         this.ctx.fillText(this.gameTime(), 1550, 110);
         /**********************time*************************/
         const ruporKey = sprites.speacer.key === 'idle' ? 'idle' : `animate${this.info.combo}`;
@@ -612,7 +620,6 @@ game.initEvent = function () {
                 number = 3;
             }
             this.activateSpeacerAnimation();
-            number = this.summXFactorAndAddBonus(number);
             this.addCombo();
             this.switchAnimation();
             this.addScore(number);
@@ -680,7 +687,7 @@ game.initEvent = function () {
     }
     setInterval(() => {
         if(this.info.pause) return false;
-        this.sprites.volume.speed += 5;
+        this.sprites.volume.speed += 4;
     }, 60000);
     setInterval(() => {
         if(this.info.pause) return false;
@@ -796,7 +803,7 @@ game.helper = {
         this.info.score = 0;
         this.info.combo = 1;
         this.info.xCombo = 0;
-        this.info.time = 150;
+        this.info.time = 120;
         this.info.pause = false;
         this.switchAnimation();
         this.animationOn.people1st = true;
@@ -904,7 +911,7 @@ game.helper = {
             number += 10;
         }
         if(lineXFactor === 6) {
-            number += 15;
+            number += 10;
         }
         switch (this.info.combo) {
             case 2: number += 5; break;
@@ -912,6 +919,7 @@ game.helper = {
             case 4: number += 15; break;
             case 5: number += 20; break;
         }
+        console.log(number, 'number');
         return number;
     },
     getNumberLine() {

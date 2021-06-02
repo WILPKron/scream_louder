@@ -1,7 +1,11 @@
 
-@font-face {
+  @font-face {
     font-family: 'KulminoituvaRegular';
     src: url('/assets/font/Geometria-Bold.woff');
+  }
+  @font-face {
+    font-family: 'KulminoituvaRegularNumber';
+    src: url('/assets/font/Quantico-Bold.ttf');
   }
   body {
     padding: 0;
