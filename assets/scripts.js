@@ -8,7 +8,7 @@ let game = {
         pause: true,
         timerStart: null,
         score: 0,
-        combo: 1,
+        combo: 5,
         xCombo: 0,
         time: null,
         userName: '',
@@ -20,6 +20,14 @@ let game = {
     },
     options: {
         fontName: "KulminoituvaRegular",
+        flash: [
+            { param: [480, 430, 180, 180], index: 0  },
+            { param: [610, 480, 180, 180], index: 2  },
+            { param: [750, 450, 180, 180], index: 0  },
+            { param: [1000, 450, 180, 180], index: 3 },
+            { param: [1250, 420, 130, 130], index: 1 },
+            { param: [1400, 450, 130, 130], index: 2 },
+        ],
         flagMap: {
             2: {
                 list: [
@@ -447,9 +455,13 @@ let game = {
                     for(const index in text) {
                         this.ctx.fillText(text[index], 690, 660 + (paddingBottom * index));
                     }
-                    this.ctx.drawImage(sprites.modal.loadImg['idle'][2], 900, 850, 230, 105);
+
+                    const buttonJump = this.sprites.buttonJump.loadImg['idle'];
+                    this.ctx.drawImage(buttonJump[0], 1620, 445, 300, 120);
+                    this.ctx.drawImage(buttonJump[1], 1640, 457, 250, 100);
                     this.ctx.font = "40px " + this.options.fontName;
-                    this.ctx.fillText("Старт!", 950, 910);
+                    this.ctx.fillText("СТАРТ!", 1690, 520);
+
                 break;
                 case "countdown":
                     this.ctx.drawImage(sprites.timer.loadImg['idle'][sprites.timer.index], 750, 320);
@@ -503,15 +515,15 @@ let game = {
 
         this.ctx.drawImage(people2st, 0, 0, 1920, 429, -110 - people2stx, 650 - people2sty, 1920 + people2stx, 429 + people2sty);
         this.ctx.drawImage(row2, 0, 0, 1280, 720, 640 - r2x, 360 - r2y, 1280 + r2x, 720 + r2y);
+
         if(sprites.boom.visible) {
-            const boom = sprites.boom.loadImg['idle'][sprites.boom.index];
-            this.ctx.drawImage(boom, 480, 430, 180, 180);
-            this.ctx.drawImage(boom, 610, 480, 180, 180);
-            this.ctx.drawImage(boom, 750, 450, 180, 180);
-            this.ctx.drawImage(boom, 1000, 450, 180, 180);
-            this.ctx.drawImage(boom, 1250, 420, 130, 130);
-            this.ctx.drawImage(boom, 1400, 450, 130, 130);
+            const lenghtBoom = sprites.boom.loadImg['idle'].length;
+            for(const b of this.options.flash) {
+                const boom = sprites.boom.loadImg['idle'][b.index];
+                this.ctx.drawImage(boom, ...b.param);
+            }
         }
+        
         const flagMap = this.options.flagMap;
         for(const comboIndex in flagMap) {
             if(comboIndex <= this.info.combo) {
@@ -644,7 +656,7 @@ game.initEvent = function () {
                 }
             },
         }
-    }, 900, 850, 230, 105);
+    }, 1640, 457, 250, 100);
 
     this.eventButton({
         event: {
@@ -726,12 +738,12 @@ game.animation = function () {
     setInterval(() => {
         if(this.info.pause) return false;
         const field = this.sprites['boom'];
-        if(this.animationOn['boom']) {
-            field.index++;
-            if(field.index == field.images[field.key].length) {
-                field.index = 0;
+        for(const b of this.options.flash) {
+            b.index++;
+            if(b.index == field.images[field.key].length) {
+                b.index = 0;
             }
-        } else field.index = 0;
+        }
     }, 180);
     /******************************************************/
     for (const fieldKey of ['crowd', 'people1st', 'people2st', 'boy', 'flag1']) {
