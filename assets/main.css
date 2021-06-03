@@ -166,3 +166,21 @@
     -moz-transition:    all 2s 2s ease-in-out;
   }
   /*fullscreen*/
+
+  .game-wrap {
+    position: absolute;
+    width: 890px;
+    height: 500px;
+    background: #222222;
+    display: grid;
+    grid-template-rows: 1fr 98px;
+  }
+  .master-wrap_fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999999999;
+    background-color: #181836;
+    padding: 0;
+    margin: 0;
+  }

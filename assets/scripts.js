@@ -14,11 +14,12 @@ let game = {
         userName: '',
         modalMode: 'start',
         scoreInfo: {
-            min: 49,
-            middle: 199,
+            min: 699,
+            middle: 1099,
         }
     },
     options: {
+        full: false,
         fontName: "KulminoituvaRegular",
         flash: [
             { param: [480, 430, 180, 180], index: 0  },
@@ -72,7 +73,11 @@ let game = {
                     path + 'images/block/ui/Tanuki_score_1.png',
                     path + 'images/block/ui/Tanuki_score_3.png',
                     path + 'images/block/ui/Tanuki_1.png',
-                    path + 'images/block/button.png'
+                    path + 'images/block/button.png',
+                    path + 'images/back.png',
+                    path + 'images/Frame_201.svg',
+                    path + 'images/Frame_202.svg',
+
                 ]
             }
         },
@@ -208,7 +213,7 @@ let game = {
             index: 0,
             key: 'idle',
             images: {
-                idle: [ path + 'images/block/start_jump_button.png', path + 'images/block/button.png' ]
+                idle: [ path + 'images/block/start_jump_button.png', path + 'images/block/button.png', path + 'images/btn.svg' ]
             }
         },
         speacer: {
@@ -435,6 +440,16 @@ let game = {
         
         if(this.info.modalMode) {
             this.ctx.drawImage(sprites.modal.loadImg['idle'][0], 0, 0);
+        }
+        if(this.options.full) {
+            this.ctx.drawImage(sprites.modal.loadImg['idle'][9], 1800, 10, 110, 110);
+        } else {
+            this.ctx.drawImage(sprites.modal.loadImg['idle'][10], 1800, 10, 110, 110);
+        }
+        
+        if(this.info.modalMode) {
+            
+            this.ctx.drawImage(sprites.modal.loadImg['idle'][8], 10, 10, 110, 110);
             this.ctx.drawImage(row2, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
             this.ctx.drawImage(row1, 0, 0, 1280, 720, 640 - r1x, 360 - r1y, 1280 + r1x, 720 + r1y);
             this.ctx.fillStyle = "#fff";
@@ -446,22 +461,21 @@ let game = {
                     const paddingBottom = 35;
                     this.ctx.textAlign = 'center';
                     const text = [
-                        `Привет, ${this.userName}! Давай поддержим наших`,
-                        'спортсменов аплодисментами. Просто повторяй',
-                        'за мной и хлопай в ритм, чтобы заработать',
-                        'побольше баллов! Готов? Тогда жми «СТАРТ!»'
+                        `Привет, ${this.userName}! Готов поддержать наших`,
+                        'спортсменов?  Тогда  кричи в мегафон как', 
+                        'можно громче! Для этого тебе нужно',
+                        'вовремя нажимать на кнопку.',
+                        'Готов? Жми «СТАРТ!»'
                     ];
-                    this.ctx.textAlign = 'left';
+                    
                     for(const index in text) {
-                        this.ctx.fillText(text[index], 690, 660 + (paddingBottom * index));
+                        this.ctx.fillText(text[index], 1000, 640 + (paddingBottom * index));
                     }
-
+                    this.ctx.textAlign = 'left';
                     const buttonJump = this.sprites.buttonJump.loadImg['idle'];
-                    this.ctx.drawImage(buttonJump[0], 1620, 445, 300, 120);
-                    this.ctx.drawImage(buttonJump[1], 1640, 457, 250, 100);
-                    this.ctx.font = "40px " + this.options.fontName;
-                    this.ctx.fillText("СТАРТ!", 1690, 520);
-
+                    this.ctx.drawImage(buttonJump[2], 1575, 435, 350, 210);
+                    this.ctx.font = "55px " + this.options.fontName;
+                    this.ctx.fillText("СТАРТ!", 1645, 558);
                 break;
                 case "countdown":
                     this.ctx.drawImage(sprites.timer.loadImg['idle'][sprites.timer.index], 750, 320);
@@ -488,7 +502,7 @@ let game = {
 
                             this.ctx.drawImage(sprites.modal.loadImg['idle'][7], 1600, 720, 230, 105);
                             this.ctx.font = "40px " + this.options.fontName;
-                            this.ctx.fillText("НЕТ!", 1715, 782);
+                            this.ctx.fillText("НЕТ", 1715, 782);
 
                         this.ctx.textAlign = 'left';
                     } else {
@@ -600,6 +614,11 @@ let game = {
         this.ctx.drawImage(buttonJump[1], 1640, 457, 250, 100);
         this.ctx.font = "40px " + this.options.fontName;
         this.ctx.fillText("ЖМИ!", 1700, 520);
+        
+        // this.ctx.drawImage(buttonJump[0], 1575, 435, 350, 210);
+        // this.ctx.font = "55px " + this.options.fontName;
+        // this.ctx.fillText("ЖМИ!", 1645, 558);
+
         this.ctx.fillStyle = "#000";
     },
     update: function() {
@@ -642,65 +661,60 @@ game.initEvent = function () {
             this.sprites.speacer.key = 'idle';
         }
     };
-    this.eventButton({
-        event: {
-            hover() {
-                if(this.info.modalMode === 'start') this.canvas.style.cursor = "pointer";
-            },
-            afterHover() { this.canvas.style.cursor = "" },
-            click() {
-                if(this.info.modalMode === 'start') {
-                    this.startTimer(function () {
-                        this.startGame();
-                    });
-                }
-            },
-        }
-    }, 1640, 457, 250, 100);
 
     this.eventButton({
         event: {
-            hover() {
-                if(this.info.modalMode === '') this.canvas.style.cursor = "pointer";
+            hover() { if(this.info.modalMode === 'start') this.canvas.style.cursor = "pointer"; },
+            afterHover() { this.canvas.style.cursor = "" },
+            click() { if(this.info.modalMode === 'start') { this.startTimer(function () { this.startGame(); }); } },
+        }
+    }, 1575, 435, 350, 210);
+    this.eventButton({
+        event: {
+            hover() { this.canvas.style.cursor = "pointer"; },
+            afterHover() { this.canvas.style.cursor = "" },
+            click() { 
+                console.log('click');
+                this.fullScreen();
             },
-            afterHover() {
-                this.canvas.style.cursor = "";
-            },
+        }
+    }, 1800, 10, 110, 110);
+    this.eventButton({
+        event: {
+            hover() { if(this.info.modalMode === '') this.canvas.style.cursor = "pointer"; },
+            afterHover() { this.canvas.style.cursor = ""; },
             click() { change() },
         }
     }, 1640, 457, 250, 100);
-    
     this.eventButton({
         event: {
-            hover() {
-                if(this.info.modalMode === 'score') this.canvas.style.cursor = "pointer";
-            },
-            afterHover() { this.canvas.style.cursor = ""; },
-            click() {
-                this.startGame();
-            }
+            hover() { if(this.info.modalMode) this.canvas.style.cursor = "pointer"; },
+            afterHover() { this.canvas.style.cursor = "" },
+            click() { window.location.href = "/lk.html" },
+        }
+    }, 10, 10, 110, 110);
+    this.eventButton({
+        event: {
+            hover() { if(this.info.modalMode === 'score') this.canvas.style.cursor = "pointer"; },
+            afterHover() { this.canvas.style.cursor = "" },
+            click() { this.startGame() }
         }
     }, 1600, 530, 230, 105);
-    
     this.eventButton({
         event: {
-            hover() {
-                if(this.info.modalMode === 'score') this.canvas.style.cursor = "pointer";
-            },
+            hover() { if(this.info.modalMode === 'score') this.canvas.style.cursor = "pointer"; },
             afterHover() { this.canvas.style.cursor = ""; },
-            click() {
-                
-            }
+            click() { window.location.href = "/lk.html"; }
         }
     }, 1600, 720, 230, 105);
 
-    document.body.onkeydown = (e) => {
-        if(e.keyCode == 32) change(e);
-    }
+    document.body.onkeydown = (e) => { if(e.keyCode == 32) change(e); }
+
     setInterval(() => {
         if(this.info.pause) return false;
         this.sprites.volume.speed += 4;
     }, 60000);
+
     setInterval(() => {
         if(this.info.pause) return false;
         this.info.time--;
@@ -793,6 +807,21 @@ game.animation = function () {
 
 };
 game.helper = {
+    fullScreen() {
+        this.options.full = !this.options.full;
+        const mw = document.querySelector('#game-block');
+        if(mw) {
+            console.log('mw', mw);
+            if(this.options.full) {
+                console.log('fill');
+                mw.classList.add('master-wrap_fixed');
+                document.body.style.overflow = 'hidden';
+            } else {
+                mw.classList.remove('master-wrap_fixed');
+                document.body.style.overflow = '';
+            }
+        }
+    },
     gameOver() {
         this.info.modalMode = 'score';
         this.info.pause = true;
@@ -855,6 +884,7 @@ game.helper = {
             };
         }
         this.canvas.addEventListener("mousemove", (e) => {
+            //this.ctx.fillRect(x, y, width, height);
             const position = getCursorPosition(e);
             const check = (position.x >= x && position.x < x + width && position.y >= y && position.y < y + height);
             if(check && !hover) {
