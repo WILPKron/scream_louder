@@ -673,8 +673,7 @@ game.initEvent = function () {
         event: {
             hover() { this.canvas.style.cursor = "pointer"; },
             afterHover() { this.canvas.style.cursor = "" },
-            click() { 
-                console.log('click');
+            click() {
                 this.fullScreen();
             },
         }
@@ -697,7 +696,7 @@ game.initEvent = function () {
         event: {
             hover() { if(this.info.modalMode === 'score') this.canvas.style.cursor = "pointer"; },
             afterHover() { this.canvas.style.cursor = "" },
-            click() { this.startGame() }
+            click() { if(this.info.modalMode === 'score') this.startGame() }
         }
     }, 1600, 530, 230, 105);
     this.eventButton({
