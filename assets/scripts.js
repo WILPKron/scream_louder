@@ -455,21 +455,22 @@ let game = {
             this.ctx.fillStyle = "#fff";
             switch(this.info.modalMode) {
                 case "start":
-                    this.ctx.font = "25px " + this.options.fontName;
+                    this.ctx.font = "30px " + this.options.fontName;
                     this.ctx.drawImage(sprites.modal.loadImg['idle'][1], 450, 100);
                     this.ctx.fillText("Тануки", 900, 515);
-                    const paddingBottom = 35;
+                    const paddingBottom = 40;
                     this.ctx.textAlign = 'center';
+
                     const text = [
-                        `Привет, ${this.userName}! Готов поддержать наших`,
-                        'спортсменов?  Тогда  кричи в мегафон как', 
-                        'можно громче! Для этого тебе нужно',
-                        'вовремя нажимать на кнопку.',
-                        'Готов? Жми «СТАРТ!»'
+                        `Привет, ${this.userName}!`, 
+                        `Готов поддержать наших спортсменов?`,
+                        'Тогда  кричи в мегафон как можно громче!', 
+                        'Для этого тебе нужно вовремя нажимать',
+                        'на кнопку. Готов? Тогда жми «СТАРТ!»',
                     ];
                     
                     for(const index in text) {
-                        this.ctx.fillText(text[index], 1000, 640 + (paddingBottom * index));
+                        this.ctx.fillText(text[index], 1000, 623 + (paddingBottom * index));
                     }
                     this.ctx.textAlign = 'left';
                     const buttonJump = this.sprites.buttonJump.loadImg['idle'];
@@ -572,7 +573,7 @@ let game = {
         this.ctx.fillText("ОЧКИ", 190, 40);
         //
         this.ctx.drawImage(score, 0, 0, 954 - scoreX, 417 - scoreY, 100, 50, 954 + scoreX, 417 + scoreY);
-        this.ctx.font = "45px " + this.options.fontName;
+        this.ctx.font = "45px KulminoituvaRegularNumber";
         this.ctx.fillText(this.formateScore(this.info.score), 190, 100);
         /**********************score*************************/
         /**********************score2*************************/
@@ -689,7 +690,7 @@ game.initEvent = function () {
         event: {
             hover() { if(this.info.modalMode) this.canvas.style.cursor = "pointer"; },
             afterHover() { this.canvas.style.cursor = "" },
-            click() { window.location.href = "/lk.html" },
+            click() { window.location.href = "/playgames.html" },
         }
     }, 10, 10, 110, 110);
     this.eventButton({
@@ -703,7 +704,7 @@ game.initEvent = function () {
         event: {
             hover() { if(this.info.modalMode === 'score') this.canvas.style.cursor = "pointer"; },
             afterHover() { this.canvas.style.cursor = ""; },
-            click() { window.location.href = "/lk.html"; }
+            click() { window.location.href = "/playgames.html"; }
         }
     }, 1600, 720, 230, 105);
 
