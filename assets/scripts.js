@@ -584,7 +584,7 @@ let game = {
         this.ctx.fillText("КОМБО", 390, 40);
         this.ctx.drawImage(score2, 0, 0, 954 - score2X, 417 - score2Y, 320, 50, 954 + score2X, 417 + score2Y);
         this.ctx.font = "45px KulminoituvaRegularNumber";
-        this.ctx.fillText(this.info.combo, 385, 100);
+        this.ctx.fillText(`×${this.info.combo}`, 385, 100);
         /**********************score2*************************/
 
         this.ctx.fillStyle = "#fff";
